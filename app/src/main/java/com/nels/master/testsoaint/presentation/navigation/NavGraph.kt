@@ -28,14 +28,12 @@ fun NavGraph(
         composable<Login> {
             LoginScreen(
                 onLoginSuccess = { rol ->
-                    val destino = if (rol == "Supervisor") {
-                        SupervisorMenu
-                    } else {
-                        OperadorMenu
-                    }
-                    navController.navigate(destino, navOptions {
-                        popUpTo(Login::class.qualifiedName!!) { inclusive = true }
-                    })
+                    navController.navigate(
+                        if (rol == "Supervisor") SupervisorMenu else OperadorMenu,
+                        navOptions {
+                            popUpTo(Login::class.qualifiedName!!) { inclusive = true }
+                        }
+                    )
                 }
             )
         }

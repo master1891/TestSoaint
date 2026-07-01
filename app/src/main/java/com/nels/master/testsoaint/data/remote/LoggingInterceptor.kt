@@ -13,6 +13,7 @@ class LoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val requestBody = request.body
+        val isLogin = request.url.encodedPath.contains("auth/login", ignoreCase = true)
 
         Log.d(TAG, "═══════════════════════════════════════════")
         Log.d(TAG, "→ ${request.method} ${request.url}")
@@ -32,7 +33,11 @@ class LoggingInterceptor : Interceptor {
 
             if (isPlainText(contentType)) {
                 Log.d(TAG, "── BODY ──")
-                Log.d(TAG, bodyString)
+                if (isLogin) {
+                    Log.d(TAG, REDACTED)
+                } else {
+                    Log.d(TAG, bodyString)
+                }
             } else {
                 Log.d(TAG, "  [binary body: ${requestBody.contentLength()} bytes]")
             }
@@ -56,17 +61,19 @@ class LoggingInterceptor : Interceptor {
         if (responseBody != null && isPlainText(responseBody.contentType())) {
             val bodyString = responseBody.string()
             Log.d(TAG, "── RESPONSE BODY ──")
-            // Chunk long bodies to avoid logcat truncation (max ~4000 chars per line)
-            val maxLen = 3800
-            if (bodyString.length > maxLen) {
-                bodyString.chunked(maxLen).forEach { chunk ->
-                    Log.d(TAG, chunk)
-                }
+            if (isLogin) {
+                Log.d(TAG, REDACTED)
             } else {
-                Log.d(TAG, bodyString)
+                val maxLen = 3800
+                if (bodyString.length > maxLen) {
+                    bodyString.chunked(maxLen).forEach { chunk ->
+                        Log.d(TAG, chunk)
+                    }
+                } else {
+                    Log.d(TAG, bodyString)
+                }
             }
 
-            // Rebuild response with the same body since we consumed it
             val newResponse = response.newBuilder()
                 .body(bodyString.toResponseBody(responseBody.contentType()))
                 .build()
@@ -88,3 +95,4 @@ class LoggingInterceptor : Interceptor {
 }
 
 private const val TAG = "HTTP"
+private const val REDACTED = "[credentials redacted]"

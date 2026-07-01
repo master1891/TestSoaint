@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">Test Soaint</string>
+
+    <!-- Login -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_perfil">Perfil</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_ingresar">Ingresar</string>
+
+    <!-- Navigation -->
+    <string name="regresar">Regresar</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="reintentar">Reintentar</string>
+
+    <!-- Operador Menu -->
+    <string name="menu_operador_title">Menú Operador</string>
+    <string name="menu_operador_opcion1">Opción 1: Dar de alta un registro</string>
+    <string name="menu_operador_opcion2">Opción 2: Consultar transacciones locales</string>
+    <string name="menu_operador_opcion3">Opción 3: Consultar registros remotos</string>
+
+    <!-- Crear Registro -->
+    <string name="crear_titulo">Dar de alta un registro</string>
+    <string name="crear_nombre">Nombre</string>
+    <string name="crear_edad">Edad</string>
+    <string name="crear_estudios">Nivel de estudios</string>
+    <string name="crear_guardar">Guardar</string>
+    <string name="crear_exito">Registro guardado exitosamente</string>
+
+    <!-- Registros Locales -->
+    <string name="locales_titulo">Registros Locales</string>
+    <string name="locales_vacio">No hay registros locales</string>
+    <string name="edad_label">Edad: %d</string>
+    <string name="estudios_label">Estudios: %s</string>
+    <string name="sincronizado">Sincronizado</string>
+
+    <!-- Registros Remotos -->
+    <string name="remotos_titulo">Registros Remotos</string>
+    <string name="remotos_vacio">No hay registros remotos</string>
+    <string name="id_label">ID: %d</string>
+
+    <!-- Supervisor Menu -->
+    <string name="menu_supervisor_title">Menú Supervisor</string>
+    <string name="menu_supervisor_opcion4">Opción 4: Eliminar registro local</string>
+
+    <!-- Eliminar Registro -->
+    <string name="eliminar_titulo">Eliminar registro local</string>
+    <string name="eliminar_vacio">No hay registros locales para eliminar</string>
+    <string name="eliminar_btn">Eliminar</string>
 </resources>

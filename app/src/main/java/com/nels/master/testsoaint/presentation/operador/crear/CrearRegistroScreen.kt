@@ -31,11 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nels.master.testsoaint.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,12 +70,12 @@ fun CrearRegistroScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Dar de alta un registro") },
+                title = { Text(stringResource(R.string.crear_titulo)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Regresar"
+                            contentDescription = stringResource(R.string.regresar)
                         )
                     }
                 }
@@ -94,7 +96,7 @@ fun CrearRegistroScreen(
                     nombre = it
                     viewModel.onNombreChanged(it)
                 },
-                label = { Text("Nombre") },
+                label = { Text(stringResource(R.string.crear_nombre)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -109,7 +111,7 @@ fun CrearRegistroScreen(
                     edad = it
                     viewModel.onEdadChanged(it)
                 },
-                label = { Text("Edad") },
+                label = { Text(stringResource(R.string.crear_edad)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
@@ -127,7 +129,7 @@ fun CrearRegistroScreen(
                     nivelEstudios = it
                     viewModel.onNivelEstudiosChanged(it)
                 },
-                label = { Text("Nivel de estudios") },
+                label = { Text(stringResource(R.string.crear_estudios)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -148,14 +150,14 @@ fun CrearRegistroScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Guardar")
+                    Text(stringResource(R.string.crear_guardar))
                 }
             }
 
             if (state.exito) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Registro guardado exitosamente",
+                    text = stringResource(R.string.crear_exito),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )

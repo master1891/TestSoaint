@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nels.master.testsoaint.R
 
 @Composable
 fun OperadorMenuScreen(
@@ -36,7 +38,7 @@ fun OperadorMenuScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Menú Operador",
+            text = stringResource(R.string.menu_operador_title),
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -46,7 +48,7 @@ fun OperadorMenuScreen(
             onClick = onCrearRegistro,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Opción 1: Dar de alta un registro")
+            Text(stringResource(R.string.menu_operador_opcion1))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -55,7 +57,7 @@ fun OperadorMenuScreen(
             onClick = onVerLocales,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Opción 2: Consultar transacciones locales")
+            Text(stringResource(R.string.menu_operador_opcion2))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -64,7 +66,7 @@ fun OperadorMenuScreen(
             onClick = onVerRemotos,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Opción 3: Consultar registros remotos")
+            Text(stringResource(R.string.menu_operador_opcion3))
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -76,7 +78,7 @@ fun OperadorMenuScreen(
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Cerrar Sesión")
+            Text(stringResource(R.string.cerrar_sesion))
         }
     }
 }

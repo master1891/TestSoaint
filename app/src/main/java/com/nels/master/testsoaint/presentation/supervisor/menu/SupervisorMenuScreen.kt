@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nels.master.testsoaint.R
 
 @Composable
 fun SupervisorMenuScreen(
@@ -34,7 +36,7 @@ fun SupervisorMenuScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Menú Supervisor",
+            text = stringResource(R.string.menu_supervisor_title),
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -44,7 +46,7 @@ fun SupervisorMenuScreen(
             onClick = onEliminarRegistro,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Opción 4: Eliminar registro local")
+            Text(stringResource(R.string.menu_supervisor_opcion4))
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -56,7 +58,7 @@ fun SupervisorMenuScreen(
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Cerrar Sesión")
+            Text(stringResource(R.string.cerrar_sesion))
         }
     }
 }

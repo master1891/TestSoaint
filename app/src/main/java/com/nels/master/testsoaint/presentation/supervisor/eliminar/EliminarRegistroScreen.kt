@@ -32,9 +32,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nels.master.testsoaint.R
 import com.nels.master.testsoaint.domain.model.Registro
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,12 +62,12 @@ fun EliminarRegistroScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Eliminar registro local") },
+                title = { Text(stringResource(R.string.eliminar_titulo)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Regresar"
+                            contentDescription = stringResource(R.string.regresar)
                         )
                     }
                 }
@@ -86,7 +88,7 @@ fun EliminarRegistroScreen(
                 }
                 state.registros.isEmpty() -> {
                     Text(
-                        text = "No hay registros locales para eliminar",
+                        text = stringResource(R.string.eliminar_vacio),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.align(Alignment.Center)
@@ -136,7 +138,7 @@ private fun RegistroEliminarCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Edad: ${registro.edad} | Estudios: ${registro.nivelEstudios}",
+                    text = stringResource(R.string.estudios_label, registro.nivelEstudios),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -148,7 +150,7 @@ private fun RegistroEliminarCard(
                     containerColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Eliminar")
+                Text(stringResource(R.string.eliminar_btn))
             }
         }
     }
