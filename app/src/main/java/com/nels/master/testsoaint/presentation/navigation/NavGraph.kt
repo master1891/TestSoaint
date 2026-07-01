@@ -18,6 +18,7 @@ import com.nels.master.testsoaint.presentation.supervisor.menu.SupervisorMenuScr
 fun NavGraph(
     navController: NavHostController,
     startDestination: String,
+    onLogout: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -43,11 +44,7 @@ fun NavGraph(
                 onCrearRegistro = { navController.navigate(CrearRegistro) },
                 onVerLocales = { navController.navigate(RegistrosLocales) },
                 onVerRemotos = { navController.navigate(RegistrosRemotos) },
-                onLogout = {
-                    navController.navigate(Login, navOptions {
-                        popUpTo(0) { inclusive = true }
-                    })
-                }
+                onLogout = onLogout
             )
         }
 
@@ -72,11 +69,7 @@ fun NavGraph(
         composable<SupervisorMenu> {
             SupervisorMenuScreen(
                 onEliminarRegistro = { navController.navigate(EliminarRegistro) },
-                onLogout = {
-                    navController.navigate(Login, navOptions {
-                        popUpTo(0) { inclusive = true }
-                    })
-                }
+                onLogout = onLogout
             )
         }
 

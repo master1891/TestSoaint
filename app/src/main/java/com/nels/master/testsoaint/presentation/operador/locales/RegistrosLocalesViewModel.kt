@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesUseCase
+import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,10 @@ class RegistrosLocalesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RegistrosLocalesUiState())
     val uiState: StateFlow<RegistrosLocalesUiState> = _uiState.asStateFlow()
 
+    companion object {
+        private const val TAG = "RegLocalesVM"
+    }
+
     init {
         cargarRegistros()
     }
@@ -41,6 +46,7 @@ class RegistrosLocalesViewModel @Inject constructor(
                     }
                 },
                 onFailure = { e ->
+                    SafeLog.e(TAG, "Error al cargar registros locales: ${e.message}")
                     _uiState.update {
                         it.copy(isLoading = false, error = e.message ?: "Error al cargar registros")
                     }

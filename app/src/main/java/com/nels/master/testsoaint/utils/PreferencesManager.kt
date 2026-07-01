@@ -1,4 +1,4 @@
-package com.nels.master.testsoaint.data.utils
+package com.nels.master.testsoaint.utils
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.usecase.EliminarRegistroUseCase
 import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesFlowUseCase
+import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +39,7 @@ class EliminarRegistroViewModel @Inject constructor(
                 _uiState.update { it.copy(registros = registros, isLoading = false) }
             }
             .catch { e ->
+                SafeLog.e(TAG, "Error en flow de registros: ${e.message}")
                 _uiState.update {
                     it.copy(isLoading = false, error = e.message ?: "Error al cargar registros")
                 }
@@ -59,15 +61,17 @@ class EliminarRegistroViewModel @Inject constructor(
                     }
                 },
                 onFailure = { e ->
+                    SafeLog.e(TAG, "Error al eliminar registro: ${e.message}")
                     _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = e.message ?: "Error al eliminar registro"
-                        )
+                        it.copy(isLoading = false, error = e.message ?: "Error al eliminar registro")
                     }
                 }
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "EliminarRegVM"
     }
 
     fun clearMensaje() {

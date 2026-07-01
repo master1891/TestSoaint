@@ -38,9 +38,17 @@ class MainActivity : ComponentActivity() {
                         Login::class.qualifiedName!!
                     }
 
+                    val onLogout = {
+                        authRepository.logout()
+                        navController.navigate(Login::class.qualifiedName!!) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+
                     NavGraph(
                         navController = navController,
-                        startDestination = startDestination
+                        startDestination = startDestination,
+                        onLogout = onLogout
                     )
                 }
             }
