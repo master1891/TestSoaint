@@ -27,9 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nels.master.testsoaint.R
 import com.nels.master.testsoaint.domain.model.Registro
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,12 +48,12 @@ fun RegistrosLocalesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Registros Locales") },
+                title = { Text(stringResource(R.string.locales_titulo)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Regresar"
+                            contentDescription = stringResource(R.string.regresar)
                         )
                     }
                 }
@@ -71,7 +73,7 @@ fun RegistrosLocalesScreen(
                 }
                 state.registros.isEmpty() -> {
                     Text(
-                        text = "No hay registros locales",
+                        text = stringResource(R.string.locales_vacio),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.align(Alignment.Center)
@@ -112,7 +114,7 @@ private fun RegistroLocalCard(registro: Registro) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Edad: ${registro.edad}",
+                    text = stringResource(R.string.edad_label, registro.edad),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
@@ -123,13 +125,13 @@ private fun RegistroLocalCard(registro: Registro) {
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Estudios: ${registro.nivelEstudios}",
+                text = stringResource(R.string.estudios_label, registro.nivelEstudios),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             if (registro.sincronizado) {
                 Text(
-                    text = "Sincronizado",
+                    text = stringResource(R.string.sincronizado),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )

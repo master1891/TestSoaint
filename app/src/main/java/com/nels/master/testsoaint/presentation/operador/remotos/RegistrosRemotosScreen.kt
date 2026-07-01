@@ -27,9 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nels.master.testsoaint.R
 import com.nels.master.testsoaint.domain.model.Registro
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,12 +45,12 @@ fun RegistrosRemotosScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Registros Remotos") },
+                title = { Text(stringResource(R.string.remotos_titulo)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Regresar"
+                            contentDescription = stringResource(R.string.regresar)
                         )
                     }
                 }
@@ -80,13 +82,13 @@ fun RegistrosRemotosScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = { viewModel.cargarRegistros() }) {
-                            Text("Reintentar")
+                            Text(stringResource(R.string.reintentar))
                         }
                     }
                 }
                 state.registros.isEmpty() -> {
                     Text(
-                        text = "No hay registros remotos",
+                        text = stringResource(R.string.remotos_vacio),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.align(Alignment.Center)
@@ -125,18 +127,18 @@ private fun RegistroRemotoCard(registro: Registro) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Edad: ${registro.edad}",
+                    text = stringResource(R.string.edad_label, registro.edad),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "ID: ${registro.id}",
+                    text = stringResource(R.string.id_label, registro.id),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Estudios: ${registro.nivelEstudios}",
+                text = stringResource(R.string.estudios_label, registro.nivelEstudios),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
