@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginUiState(
-    val username: String = "",
+    val selectedRol: String = "Operador",
     val password: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
@@ -27,8 +27,13 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    fun onUsernameChanged(username: String) {
-        _uiState.update { it.copy(username = username, error = null) }
+    private val usernames = mapOf(
+        "Operador" to "operador",
+        "Supervisor" to "supervisor"
+    )
+
+    fun onRolSelected(rol: String) {
+        _uiState.update { it.copy(selectedRol = rol, error = null) }
     }
 
     fun onPasswordChanged(password: String) {
@@ -37,14 +42,16 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         val state = _uiState.value
-        if (state.username.isBlank() || state.password.isBlank()) {
-            _uiState.update { it.copy(error = "Usuario y contraseña requeridos") }
+        val username = usernames[state.selectedRol] ?: return
+
+        if (state.password.isBlank()) {
+            _uiState.update { it.copy(error = "Contraseña requerida") }
             return
         }
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            val result = loginUseCase(state.username, state.password)
+            val result = loginUseCase(username, state.password)
             result.fold(
                 onSuccess = { usuario ->
                     _uiState.update { it.copy(isLoading = false, rol = usuario.rol) }
