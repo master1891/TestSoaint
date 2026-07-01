@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import com.nels.master.testsoaint.presentation.login.LoginScreen
 import com.nels.master.testsoaint.presentation.operador.crear.CrearRegistroScreen
 import com.nels.master.testsoaint.presentation.operador.locales.RegistrosLocalesScreen
@@ -24,64 +25,64 @@ fun NavGraph(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        composable(Screen.Login.route) {
+        composable<Login> {
             LoginScreen(
                 onLoginSuccess = { rol ->
                     val destino = if (rol == "Supervisor") {
-                        Screen.SupervisorMenu.route
+                        SupervisorMenu
                     } else {
-                        Screen.OperadorMenu.route
+                        OperadorMenu
                     }
-                    navController.navigate(destino) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
+                    navController.navigate(destino, navOptions {
+                        popUpTo(Login::class.qualifiedName!!) { inclusive = true }
+                    })
                 }
             )
         }
 
-        composable(Screen.OperadorMenu.route) {
+        composable<OperadorMenu> {
             OperadorMenuScreen(
-                onCrearRegistro = { navController.navigate(Screen.CrearRegistro.route) },
-                onVerLocales = { navController.navigate(Screen.RegistrosLocales.route) },
-                onVerRemotos = { navController.navigate(Screen.RegistrosRemotos.route) },
+                onCrearRegistro = { navController.navigate(CrearRegistro) },
+                onVerLocales = { navController.navigate(RegistrosLocales) },
+                onVerRemotos = { navController.navigate(RegistrosRemotos) },
                 onLogout = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(Login, navOptions {
                         popUpTo(0) { inclusive = true }
-                    }
+                    })
                 }
             )
         }
 
-        composable(Screen.CrearRegistro.route) {
+        composable<CrearRegistro> {
             CrearRegistroScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.RegistrosLocales.route) {
+        composable<RegistrosLocales> {
             RegistrosLocalesScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.RegistrosRemotos.route) {
+        composable<RegistrosRemotos> {
             RegistrosRemotosScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.SupervisorMenu.route) {
+        composable<SupervisorMenu> {
             SupervisorMenuScreen(
-                onEliminarRegistro = { navController.navigate(Screen.EliminarRegistro.route) },
+                onEliminarRegistro = { navController.navigate(EliminarRegistro) },
                 onLogout = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(Login, navOptions {
                         popUpTo(0) { inclusive = true }
-                    }
+                    })
                 }
             )
         }
 
-        composable(Screen.EliminarRegistro.route) {
+        composable<EliminarRegistro> {
             EliminarRegistroScreen(
                 onNavigateBack = { navController.popBackStack() }
             )

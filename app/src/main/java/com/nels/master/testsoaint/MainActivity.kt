@@ -9,8 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.nels.master.testsoaint.domain.repository.AuthRepository
+import com.nels.master.testsoaint.presentation.navigation.Login
 import com.nels.master.testsoaint.presentation.navigation.NavGraph
-import com.nels.master.testsoaint.presentation.navigation.Screen
+import com.nels.master.testsoaint.presentation.navigation.OperadorMenu
+import com.nels.master.testsoaint.presentation.navigation.SupervisorMenu
 import com.nels.master.testsoaint.ui.theme.TestSoaintTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,18 +28,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestSoaintTheme {
-                Surface(
-
-                    modifier = Modifier.fillMaxSize()
-
-                ) {
+                Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
                     val sesion = authRepository.getSession()
                     val startDestination = if (sesion != null) {
-                        if (sesion.rol == "Supervisor") Screen.SupervisorMenu.route
-                        else Screen.OperadorMenu.route
+                        if (sesion.rol == "Supervisor") SupervisorMenu::class.qualifiedName!!
+                        else OperadorMenu::class.qualifiedName!!
                     } else {
-                        Screen.Login.route
+                        Login::class.qualifiedName!!
                     }
 
                     NavGraph(

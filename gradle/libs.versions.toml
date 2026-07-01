@@ -16,6 +16,7 @@ navigationCompose = "2.8.9"
 hilt = "2.60"
 hiltNavigationCompose = "1.2.0"
 securityCrypto = "1.1.0-alpha06"
+kotlinxSerialization = "1.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,9 +52,11 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version = "2.36.0" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
