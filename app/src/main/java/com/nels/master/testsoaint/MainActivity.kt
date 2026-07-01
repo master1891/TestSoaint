@@ -26,7 +26,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestSoaintTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
+                Surface(
+
+                    modifier = Modifier.fillMaxSize()
+
+                ) {
                     val navController = rememberNavController()
                     val sesion = authRepository.getSession()
                     val startDestination = if (sesion != null) {
