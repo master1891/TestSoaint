@@ -1,6 +1,7 @@
 package com.nels.master.testsoaint.presentation.login
 
 import com.nels.master.testsoaint.domain.model.Usuario
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.LoginUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -53,7 +54,7 @@ class LoginViewModelTest {
     @Test
     fun `login with valid data sets rol on success`() = runTest {
         val usuario = Usuario(username = "operador", rol = "Operador")
-        coEvery { loginUseCase.invoke("operador", "123456") } returns Result.success(usuario)
+        coEvery { loginUseCase.invoke("operador", "123456") } returns Resultado.Exito(usuario)
 
         viewModel = LoginViewModel(loginUseCase)
         viewModel.onPasswordChanged("123456")
@@ -65,7 +66,7 @@ class LoginViewModelTest {
 
     @Test
     fun `login with use case failure sets error`() = runTest {
-        coEvery { loginUseCase.invoke(any(), any()) } returns Result.failure(Exception("Error de red"))
+        coEvery { loginUseCase.invoke(any(), any()) } returns Resultado.Error(Exception("Error de red"))
 
         viewModel = LoginViewModel(loginUseCase)
         viewModel.onPasswordChanged("123456")

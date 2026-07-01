@@ -14,9 +14,9 @@
 
     <!-- Operador Menu -->
     <string name="menu_operador_title">Menú Operador</string>
-    <string name="menu_operador_opcion1">Opción 1: Dar de alta un registro</string>
-    <string name="menu_operador_opcion2">Opción 2: Consultar transacciones locales</string>
-    <string name="menu_operador_opcion3">Opción 3: Consultar registros remotos</string>
+    <string name="menu_operador_opcion1">Dar de alta un registro</string>
+    <string name="menu_operador_opcion2">Consultar transacciones locales</string>
+    <string name="menu_operador_opcion3">Consultar registros remotos</string>
 
     <!-- Crear Registro -->
     <string name="crear_titulo">Dar de alta un registro</string>
@@ -40,7 +40,7 @@
 
     <!-- Supervisor Menu -->
     <string name="menu_supervisor_title">Menú Supervisor</string>
-    <string name="menu_supervisor_opcion4">Opción 4: Eliminar registro local</string>
+    <string name="menu_supervisor_opcion4">Eliminar registro local</string>
 
     <!-- Eliminar Registro -->
     <string name="eliminar_titulo">Eliminar registro local</string>

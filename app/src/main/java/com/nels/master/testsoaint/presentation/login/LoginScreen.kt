@@ -33,16 +33,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.nels.master.testsoaint.ui.theme.Dimens
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nels.master.testsoaint.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel,
     onLoginSuccess: (rol: String) -> Unit,
-    viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -69,7 +68,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(24.dp),
+                .padding(Dimens.paddingScreen),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -78,7 +77,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.headlineLarge
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingXxl))
 
             ExposedDropdownMenuBox(
                 expanded = expanded,
@@ -113,7 +112,7 @@ fun LoginScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingLg))
 
             OutlinedTextField(
                 value = state.password,
@@ -132,7 +131,7 @@ fun LoginScreen(
                 enabled = !state.isLoading
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Dimens.paddingScreen))
 
             Button(
                 onClick = { viewModel.login() },
@@ -141,8 +140,8 @@ fun LoginScreen(
             ) {
                 if (state.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.height(20.dp),
-                        strokeWidth = 2.dp,
+                        modifier = Modifier.height(Dimens.spacingXl),
+                        strokeWidth = Dimens.strokeButton,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {

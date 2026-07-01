@@ -3,6 +3,7 @@ package com.nels.master.testsoaint.presentation.operador.crear
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.CrearRegistroUseCase
 import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,21 +66,19 @@ class CrearRegistroViewModel @Inject constructor(
             val registro = Registro(
                 nombre = state.nombre,
                 edad = edad,
-                nivelEstudios = state.nivelEstudios
+                nivelEstudios = state.nivelEstudios,
+                fechaCreacion = System.currentTimeMillis()
             )
 
             val result = crearRegistroUseCase(registro)
-            result.fold(
-                onSuccess = {
-                    _uiState.update { it.copy(isLoading = false, exito = true) }
-                },
-                onFailure = { e ->
-                    SafeLog.e(TAG, "Error al guardar registro: ${e.message}")
-                    _uiState.update {
-                        it.copy(isLoading = false, error = e.message ?: "Error al guardar el registro")
-                    }
+            if (result is Resultado.Exito<*>) {
+                _uiState.update { it.copy(isLoading = false, exito = true) }
+            } else if (result is Resultado.Error) {
+                SafeLog.e(TAG, "Error al guardar registro: ${result.exception.message}")
+                _uiState.update {
+                    it.copy(isLoading = false, error = result.exception.message ?: "Error al guardar el registro")
                 }
-            )
+            }
         }
     }
 
@@ -88,6 +87,12 @@ class CrearRegistroViewModel @Inject constructor(
     }
 
     fun reiniciar() {
-        _uiState.value = CrearRegistroUiState()
+        _uiState.update {
+            it.copy(nombre = "", edad = "", nivelEstudios = "", isLoading = false, error = null)
+        }
+    }
+
+    fun limpiarExito() {
+        _uiState.update { it.copy(exito = false) }
     }
 }

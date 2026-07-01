@@ -1,6 +1,7 @@
 package com.nels.master.testsoaint.presentation.operador.crear
 
 import com.nels.master.testsoaint.domain.model.Registro
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.CrearRegistroUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -75,8 +76,8 @@ class CrearRegistroViewModelTest {
 
     @Test
     fun `guardar with valid data sets exito on success`() = runTest {
-        coEvery { crearRegistroUseCase.invoke(any<Registro>()) } returns Result.success(
-            Registro(nombre = "Juan", edad = 25, nivelEstudios = "Universitario")
+        coEvery { crearRegistroUseCase.invoke(any<Registro>()) } returns Resultado.Exito(
+            Registro(nombre = "Juan", edad = 25, nivelEstudios = "Universitario", fechaCreacion = 1000L)
         )
 
         viewModel = CrearRegistroViewModel(crearRegistroUseCase)
@@ -91,7 +92,7 @@ class CrearRegistroViewModelTest {
 
     @Test
     fun `guardar with use case failure sets error`() = runTest {
-        coEvery { crearRegistroUseCase.invoke(any<Registro>()) } returns Result.failure(Exception("Error"))
+        coEvery { crearRegistroUseCase.invoke(any<Registro>()) } returns Resultado.Error(Exception("Error"))
 
         viewModel = CrearRegistroViewModel(crearRegistroUseCase)
         viewModel.onNombreChanged("Juan")

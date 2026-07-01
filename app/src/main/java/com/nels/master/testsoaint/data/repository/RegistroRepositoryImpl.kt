@@ -6,10 +6,10 @@ import com.nels.master.testsoaint.data.local.entity.toEntity
 import com.nels.master.testsoaint.data.remote.api.RegistroApi
 import com.nels.master.testsoaint.data.remote.dto.toCrearRequest
 import com.nels.master.testsoaint.data.remote.dto.toDomain
-import com.nels.master.testsoaint.domain.exception.AppException
 import com.nels.master.testsoaint.domain.exception.NetworkException
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.repository.RegistroRepository
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class RegistroRepositoryImpl @Inject constructor(
     private val registroApi: RegistroApi
 ) : RegistroRepository {
 
-    override suspend fun crearRegistro(registro: Registro): Result<Registro> {
+    override suspend fun crearRegistro(registro: Registro): Resultado<Registro> {
         return try {
             val entity = registro.toEntity()
             val id = registroDao.insertar(entity)
@@ -30,20 +30,20 @@ class RegistroRepositoryImpl @Inject constructor(
             val response = registroApi.crearRegistro(registro.toCrearRequest())
             if (response.isSuccessful) {
                 registroDao.actualizarSincronizado(id, true)
-                Result.success(entityConId.copy(sincronizado = true).toDomain())
+                Resultado.Exito(entityConId.copy(sincronizado = true).toDomain())
             } else {
-                Result.success(entityConId.toDomain())
+                Resultado.Exito(entityConId.toDomain())
             }
-        } catch (e: AppException) {
-            Result.failure(e)
         } catch (e: Exception) {
-            Result.failure(NetworkException("Error de red", e))
+            Resultado.Error(NetworkException("Error de red", e))
         }
     }
 
-    override suspend fun obtenerRegistrosLocales(): Result<List<Registro>> {
-        return runCatching {
-            registroDao.obtenerTodos().map { it.toDomain() }
+    override suspend fun obtenerRegistrosLocales(): Resultado<List<Registro>> {
+        return try {
+            Resultado.Exito(registroDao.obtenerTodos().map { it.toDomain() })
+        } catch (e: Exception) {
+            Resultado.Error(e)
         }
     }
 
@@ -53,24 +53,25 @@ class RegistroRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun obtenerRegistrosRemotos(): Result<List<Registro>> {
+    override suspend fun obtenerRegistrosRemotos(): Resultado<List<Registro>> {
         return try {
             val response = registroApi.obtenerRegistros()
             if (!response.isSuccessful) {
-                Result.failure(NetworkException("Error al obtener registros remotos: ${response.code()}"))
+                Resultado.Error(NetworkException("Error al obtener registros remotos: ${response.code()}"))
             } else {
-                Result.success(response.body()?.map { it.toDomain() } ?: emptyList())
+                Resultado.Exito(response.body()?.map { it.toDomain() } ?: emptyList())
             }
-        } catch (e: AppException) {
-            Result.failure(e)
         } catch (e: Exception) {
-            Result.failure(NetworkException("Error de red", e))
+            Resultado.Error(NetworkException("Error de red", e))
         }
     }
 
-    override suspend fun eliminarRegistro(id: Long): Result<Unit> {
-        return runCatching {
+    override suspend fun eliminarRegistro(id: Long): Resultado<Unit> {
+        return try {
             registroDao.eliminarPorId(id)
+            Resultado.Exito(Unit)
+        } catch (e: Exception) {
+            Resultado.Error(e)
         }
     }
 }

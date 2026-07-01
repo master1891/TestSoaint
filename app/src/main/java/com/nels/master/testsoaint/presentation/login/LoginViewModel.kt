@@ -2,6 +2,8 @@ package com.nels.master.testsoaint.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nels.master.testsoaint.domain.model.Usuario
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.LoginUseCase
 import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,17 +55,15 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             val result = loginUseCase(username, state.password)
-            result.fold(
-                onSuccess = { usuario ->
-                    _uiState.update { it.copy(isLoading = false, rol = usuario.rol) }
-                },
-                onFailure = { e ->
-                    SafeLog.e(TAG, "Login falló: ${e.message}")
-                    _uiState.update {
-                        it.copy(isLoading = false, error = e.message ?: "Error de inicio de sesión")
-                    }
+            if (result is Resultado.Exito<*>) {
+                val usuario = result.data as Usuario
+                _uiState.update { it.copy(isLoading = false, rol = usuario.rol) }
+            } else if (result is Resultado.Error) {
+                SafeLog.e(TAG, "Login falló: ${result.exception.message}")
+                _uiState.update {
+                    it.copy(isLoading = false, error = result.exception.message ?: "Error de inicio de sesión")
                 }
-            )
+            }
         }
     }
 

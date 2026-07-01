@@ -3,8 +3,9 @@ package com.nels.master.testsoaint.presentation.supervisor.eliminar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.EliminarRegistroUseCase
-import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesFlowUseCase
+import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesUseCase
 import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ data class EliminarRegistroUiState(
 
 @HiltViewModel
 class EliminarRegistroViewModel @Inject constructor(
-    private val obtenerRegistrosLocalesFlowUseCase: ObtenerRegistrosLocalesFlowUseCase,
+    private val obtenerRegistrosLocalesFlowUseCase: ObtenerRegistrosLocalesUseCase,
     private val eliminarRegistroUseCase: EliminarRegistroUseCase
 ) : ViewModel() {
 
@@ -51,22 +52,19 @@ class EliminarRegistroViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null, mensajeExito = null) }
             val result = eliminarRegistroUseCase(id)
-            result.fold(
-                onSuccess = {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            mensajeExito = "Registro eliminado correctamente"
-                        )
-                    }
-                },
-                onFailure = { e ->
-                    SafeLog.e(TAG, "Error al eliminar registro: ${e.message}")
-                    _uiState.update {
-                        it.copy(isLoading = false, error = e.message ?: "Error al eliminar registro")
-                    }
+            if (result is Resultado.Exito<*>) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        mensajeExito = "Registro eliminado correctamente"
+                    )
                 }
-            )
+            } else if (result is Resultado.Error) {
+                SafeLog.e(TAG, "Error al eliminar registro: ${result.exception.message}")
+                _uiState.update {
+                    it.copy(isLoading = false, error = result.exception.message ?: "Error al eliminar registro")
+                }
+            }
         }
     }
 

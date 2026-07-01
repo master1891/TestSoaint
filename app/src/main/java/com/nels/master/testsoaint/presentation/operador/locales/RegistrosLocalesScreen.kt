@@ -22,26 +22,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.nels.master.testsoaint.ui.theme.Dimens
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nels.master.testsoaint.R
 import com.nels.master.testsoaint.domain.model.Registro
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrosLocalesScreen(
+    toolbarContainerColor: Color,
+    viewModel: RegistrosLocalesViewModel,
     onNavigateBack: () -> Unit,
-    viewModel: RegistrosLocalesViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -49,6 +51,9 @@ fun RegistrosLocalesScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.locales_titulo)) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = toolbarContainerColor
+                ),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -83,8 +88,8 @@ fun RegistrosLocalesScreen(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .padding(Dimens.spacingLg),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingMd)
                     ) {
                         items(state.registros, key = { it.id }) { registro ->
                             RegistroLocalCard(registro = registro)
@@ -98,17 +103,19 @@ fun RegistrosLocalesScreen(
 
 @Composable
 private fun RegistroLocalCard(registro: Registro) {
-    val dateFormat = remember { SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()) }
+    val dateFormat = remember {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault())
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(Dimens.spacingLg)) {
             Text(
                 text = registro.nombre,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingSm))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -118,12 +125,12 @@ private fun RegistroLocalCard(registro: Registro) {
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = dateFormat.format(Date(registro.fechaCreacion)),
+                    text = dateFormat.format(Instant.ofEpochMilli(registro.fechaCreacion)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingXs))
             Text(
                 text = stringResource(R.string.estudios_label, registro.nivelEstudios),
                 style = MaterialTheme.typography.bodyMedium,
