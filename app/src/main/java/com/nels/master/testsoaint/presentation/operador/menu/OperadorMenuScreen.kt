@@ -19,8 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.nels.master.testsoaint.R
+import com.nels.master.testsoaint.ui.theme.Dimens
 
 @Composable
 fun OperadorMenuScreen(
@@ -33,7 +33,7 @@ fun OperadorMenuScreen(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(24.dp),
+            .padding(Dimens.paddingScreen),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -42,7 +42,7 @@ fun OperadorMenuScreen(
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingXxl))
 
         Button(
             onClick = onCrearRegistro,
@@ -51,7 +51,7 @@ fun OperadorMenuScreen(
             Text(stringResource(R.string.menu_operador_opcion1))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingLg))
 
         Button(
             onClick = onVerLocales,
@@ -60,7 +60,7 @@ fun OperadorMenuScreen(
             Text(stringResource(R.string.menu_operador_opcion2))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingLg))
 
         Button(
             onClick = onVerRemotos,

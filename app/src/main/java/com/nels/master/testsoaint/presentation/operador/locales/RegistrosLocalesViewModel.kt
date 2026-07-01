@@ -9,8 +9,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class RegistrosLocalesUiState(
@@ -36,22 +38,15 @@ class RegistrosLocalesViewModel @Inject constructor(
     }
 
     fun cargarRegistros() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            val result = obtenerRegistrosLocalesUseCase()
-            result.fold(
-                onSuccess = { registros ->
-                    _uiState.update {
-                        it.copy(registros = registros, isLoading = false)
-                    }
-                },
-                onFailure = { e ->
-                    SafeLog.e(TAG, "Error al cargar registros locales: ${e.message}")
-                    _uiState.update {
-                        it.copy(isLoading = false, error = e.message ?: "Error al cargar registros")
-                    }
-                }
-            )
-        }
+        _uiState.update { it.copy(isLoading = true, error = null) }
+        obtenerRegistrosLocalesUseCase()
+            .onEach { registros ->
+                _uiState.update { it.copy(registros = registros, isLoading = false) }
+            }
+            .catch { e ->
+                SafeLog.e(TAG, "Error al cargar registros locales: ${e.message}")
+                _uiState.update { it.copy(isLoading = false, error = e.message ?: "Error al cargar registros") }
+            }
+            .launchIn(viewModelScope)
     }
 }

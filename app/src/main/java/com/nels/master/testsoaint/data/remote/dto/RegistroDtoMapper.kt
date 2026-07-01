@@ -6,7 +6,8 @@ fun RegistroDto.toDomain() = Registro(
     id = id,
     nombre = nombre,
     edad = edad,
-    nivelEstudios = nivelEstudios
+    nivelEstudios = nivelEstudios,
+    fechaCreacion = System.currentTimeMillis()
 )
 
 fun Registro.toCrearRequest() = CrearRegistroRequest(

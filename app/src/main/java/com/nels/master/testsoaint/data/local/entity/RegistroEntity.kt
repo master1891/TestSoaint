@@ -10,6 +10,6 @@ data class RegistroEntity(
     val nombre: String,
     val edad: Int,
     val nivelEstudios: String,
-    val fechaCreacion: Long = System.currentTimeMillis(),
+    val fechaCreacion: Long,
     val sincronizado: Boolean = false
 )

@@ -19,8 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.nels.master.testsoaint.R
+import com.nels.master.testsoaint.ui.theme.Dimens
 
 @Composable
 fun SupervisorMenuScreen(
@@ -31,7 +31,7 @@ fun SupervisorMenuScreen(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(24.dp),
+            .padding(Dimens.paddingScreen),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -40,7 +40,7 @@ fun SupervisorMenuScreen(
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(Dimens.spacingXxl))
 
         Button(
             onClick = onEliminarRegistro,

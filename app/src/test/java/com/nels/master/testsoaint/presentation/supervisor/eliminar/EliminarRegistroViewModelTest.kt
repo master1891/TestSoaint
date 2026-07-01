@@ -1,8 +1,9 @@
 package com.nels.master.testsoaint.presentation.supervisor.eliminar
 
 import com.nels.master.testsoaint.domain.model.Registro
+import com.nels.master.testsoaint.domain.resultado.Resultado
 import com.nels.master.testsoaint.domain.usecase.EliminarRegistroUseCase
-import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesFlowUseCase
+import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +21,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class EliminarRegistroViewModelTest {
 
-    private val obtenerRegistrosLocalesFlowUseCase: ObtenerRegistrosLocalesFlowUseCase = mockk()
+    private val obtenerRegistrosLocalesUseCase: ObtenerRegistrosLocalesUseCase = mockk()
     private val eliminarRegistroUseCase: EliminarRegistroUseCase = mockk()
     private lateinit var viewModel: EliminarRegistroViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -38,11 +39,11 @@ class EliminarRegistroViewModelTest {
     @Test
     fun `init loads registros from flow`() = runTest {
         val registros = listOf(
-            Registro(id = 1, nombre = "Juan", edad = 25, nivelEstudios = "U")
+            Registro(id = 1, nombre = "Juan", edad = 25, nivelEstudios = "Superior", fechaCreacion = 1000L)
         )
-        every { obtenerRegistrosLocalesFlowUseCase() } returns flowOf(registros)
+        every { obtenerRegistrosLocalesUseCase() } returns flowOf(registros)
 
-        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesFlowUseCase, eliminarRegistroUseCase)
+        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesUseCase, eliminarRegistroUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
 
         assert(viewModel.uiState.value.registros.size == 1)
@@ -51,10 +52,10 @@ class EliminarRegistroViewModelTest {
 
     @Test
     fun `eliminarRegistro on success shows mensaje`() = runTest {
-        every { obtenerRegistrosLocalesFlowUseCase() } returns flowOf(emptyList())
-        coEvery { eliminarRegistroUseCase(1) } returns Result.success(Unit)
+        every { obtenerRegistrosLocalesUseCase() } returns flowOf(emptyList())
+        coEvery { eliminarRegistroUseCase(1) } returns Resultado.Exito(Unit)
 
-        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesFlowUseCase, eliminarRegistroUseCase)
+        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesUseCase, eliminarRegistroUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.eliminarRegistro(1)
@@ -65,10 +66,10 @@ class EliminarRegistroViewModelTest {
 
     @Test
     fun `eliminarRegistro on failure sets error`() = runTest {
-        every { obtenerRegistrosLocalesFlowUseCase() } returns flowOf(emptyList())
-        coEvery { eliminarRegistroUseCase(any()) } returns Result.failure(Exception("Error"))
+        every { obtenerRegistrosLocalesUseCase() } returns flowOf(emptyList())
+        coEvery { eliminarRegistroUseCase(any()) } returns Resultado.Error(Exception("Error"))
 
-        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesFlowUseCase, eliminarRegistroUseCase)
+        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesUseCase, eliminarRegistroUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.eliminarRegistro(1)
@@ -79,10 +80,10 @@ class EliminarRegistroViewModelTest {
 
     @Test
     fun `clearMensaje clears success message`() = runTest {
-        every { obtenerRegistrosLocalesFlowUseCase() } returns flowOf(emptyList())
-        coEvery { eliminarRegistroUseCase(any()) } returns Result.success(Unit)
+        every { obtenerRegistrosLocalesUseCase() } returns flowOf(emptyList())
+        coEvery { eliminarRegistroUseCase(any()) } returns Resultado.Exito(Unit)
 
-        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesFlowUseCase, eliminarRegistroUseCase)
+        viewModel = EliminarRegistroViewModel(obtenerRegistrosLocalesUseCase, eliminarRegistroUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.eliminarRegistro(1)

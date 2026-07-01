@@ -28,8 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.nels.master.testsoaint.ui.theme.Dimens
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nels.master.testsoaint.R
 import com.nels.master.testsoaint.domain.model.Registro
@@ -37,8 +36,8 @@ import com.nels.master.testsoaint.domain.model.Registro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrosRemotosScreen(
+    viewModel: RegistrosRemotosViewModel,
     onNavigateBack: () -> Unit,
-    viewModel: RegistrosRemotosViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -72,7 +71,7 @@ fun RegistrosRemotosScreen(
                     Column(
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .padding(24.dp),
+                            .padding(Dimens.paddingScreen),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -80,7 +79,7 @@ fun RegistrosRemotosScreen(
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.error
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(Dimens.spacingLg))
                         Button(onClick = { viewModel.cargarRegistros() }) {
                             Text(stringResource(R.string.reintentar))
                         }
@@ -98,8 +97,8 @@ fun RegistrosRemotosScreen(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                            .padding(Dimens.spacingLg),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.spacingMd)
                     ) {
                         items(state.registros, key = { it.id }) { registro ->
                             RegistroRemotoCard(registro = registro)
@@ -116,12 +115,12 @@ private fun RegistroRemotoCard(registro: Registro) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(Dimens.spacingLg)) {
             Text(
                 text = registro.nombre,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingSm))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -136,7 +135,7 @@ private fun RegistroRemotoCard(registro: Registro) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(Dimens.spacingXs))
             Text(
                 text = stringResource(R.string.estudios_label, registro.nivelEstudios),
                 style = MaterialTheme.typography.bodyMedium,

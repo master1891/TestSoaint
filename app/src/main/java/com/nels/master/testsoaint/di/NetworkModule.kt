@@ -3,6 +3,7 @@ package com.nels.master.testsoaint.di
 import com.nels.master.testsoaint.data.remote.LoggingInterceptor
 import com.nels.master.testsoaint.data.remote.api.AuthApi
 import com.nels.master.testsoaint.data.remote.api.RegistroApi
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,9 +22,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): LoggingInterceptor = LoggingInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(loggingInterceptor: LoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(LoggingInterceptor())
+            .addInterceptor(loggingInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
