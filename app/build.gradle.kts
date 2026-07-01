@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -69,6 +70,7 @@ dependencies {
 
     implementation(libs.androidx.security.crypto)
     implementation(libs.errorprone.annotations)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

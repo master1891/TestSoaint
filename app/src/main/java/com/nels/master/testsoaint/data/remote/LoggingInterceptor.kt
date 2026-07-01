@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 
 class LoggingInterceptor : Interceptor {
@@ -67,7 +68,7 @@ class LoggingInterceptor : Interceptor {
 
             // Rebuild response with the same body since we consumed it
             val newResponse = response.newBuilder()
-                .body(ResponseBody.create(responseBody.contentType(), bodyString))
+                .body(bodyString.toResponseBody(responseBody.contentType()))
                 .build()
             Log.d(TAG, "═══════════════════════════════════════════")
             return newResponse
