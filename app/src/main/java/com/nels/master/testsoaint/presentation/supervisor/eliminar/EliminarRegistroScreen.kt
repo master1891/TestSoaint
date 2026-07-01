@@ -26,7 +26,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,6 +43,7 @@ import com.nels.master.testsoaint.domain.model.Registro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EliminarRegistroScreen(
+    toolbarContainerColor: Color,
     viewModel: EliminarRegistroViewModel,
     onNavigateBack: () -> Unit,
 ) {
@@ -62,6 +65,9 @@ fun EliminarRegistroScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.eliminar_titulo)) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = toolbarContainerColor
+                ),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

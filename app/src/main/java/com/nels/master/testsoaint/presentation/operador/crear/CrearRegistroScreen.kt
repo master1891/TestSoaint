@@ -23,7 +23,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +43,7 @@ import com.nels.master.testsoaint.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrearRegistroScreen(
+    toolbarContainerColor: Color,
     viewModel: CrearRegistroViewModel,
     onNavigateBack: () -> Unit,
 ) {
@@ -74,6 +77,9 @@ fun CrearRegistroScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.crear_titulo)) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = toolbarContainerColor
+                ),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

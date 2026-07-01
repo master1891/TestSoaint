@@ -1,6 +1,10 @@
 package com.nels.master.testsoaint.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -19,14 +23,20 @@ import com.nels.master.testsoaint.presentation.operador.remotos.RegistrosRemotos
 import com.nels.master.testsoaint.presentation.supervisor.eliminar.EliminarRegistroScreen
 import com.nels.master.testsoaint.presentation.supervisor.eliminar.EliminarRegistroViewModel
 import com.nels.master.testsoaint.presentation.supervisor.menu.SupervisorMenuScreen
+import com.nels.master.testsoaint.ui.theme.ToolbarOperador
+import com.nels.master.testsoaint.ui.theme.ToolbarSupervisor
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
     startDestination: String,
+    initialRol: String? = null,
     onLogout: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    var currentRol by remember { mutableStateOf(initialRol) }
+    val toolbarColor = if (currentRol == "Operador") ToolbarOperador else ToolbarSupervisor
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -37,6 +47,7 @@ fun NavGraph(
             LoginScreen(
                 viewModel = viewModel,
                 onLoginSuccess = { rol ->
+                    currentRol = rol
                     navController.navigate(
                         if (rol == "Supervisor") SupervisorMenu else OperadorMenu,
                         navOptions {
@@ -49,6 +60,7 @@ fun NavGraph(
 
         composable<OperadorMenu> {
             OperadorMenuScreen(
+                toolbarContainerColor = toolbarColor,
                 onCrearRegistro = { navController.navigate(CrearRegistro) },
                 onVerLocales = { navController.navigate(RegistrosLocales) },
                 onVerRemotos = { navController.navigate(RegistrosRemotos) },
@@ -59,6 +71,7 @@ fun NavGraph(
         composable<CrearRegistro> {
             val viewModel: CrearRegistroViewModel = hiltViewModel()
             CrearRegistroScreen(
+                toolbarContainerColor = toolbarColor,
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
@@ -67,6 +80,7 @@ fun NavGraph(
         composable<RegistrosLocales> {
             val viewModel: RegistrosLocalesViewModel = hiltViewModel()
             RegistrosLocalesScreen(
+                toolbarContainerColor = toolbarColor,
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
@@ -75,6 +89,7 @@ fun NavGraph(
         composable<RegistrosRemotos> {
             val viewModel: RegistrosRemotosViewModel = hiltViewModel()
             RegistrosRemotosScreen(
+                toolbarContainerColor = toolbarColor,
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
@@ -82,6 +97,7 @@ fun NavGraph(
 
         composable<SupervisorMenu> {
             SupervisorMenuScreen(
+                toolbarContainerColor = toolbarColor,
                 onEliminarRegistro = { navController.navigate(EliminarRegistro) },
                 onLogout = onLogout
             )
@@ -90,6 +106,7 @@ fun NavGraph(
         composable<EliminarRegistro> {
             val viewModel: EliminarRegistroViewModel = hiltViewModel()
             EliminarRegistroScreen(
+                toolbarContainerColor = toolbarColor,
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )

@@ -23,7 +23,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +38,7 @@ import com.nels.master.testsoaint.domain.model.Registro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrosRemotosScreen(
+    toolbarContainerColor: Color,
     viewModel: RegistrosRemotosViewModel,
     onNavigateBack: () -> Unit,
 ) {
@@ -45,6 +48,9 @@ fun RegistrosRemotosScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.remotos_titulo)) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = toolbarContainerColor
+                ),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

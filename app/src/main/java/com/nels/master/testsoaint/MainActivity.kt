@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     NavGraph(
                         navController = navController,
                         startDestination = startDestination,
+                        initialRol = sesion?.rol,
                         onLogout = onLogout
                     )
                 }
