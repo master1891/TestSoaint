@@ -3,6 +3,7 @@ package com.nels.master.testsoaint.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.usecase.LoginUseCase
+import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,11 +58,9 @@ class LoginViewModel @Inject constructor(
                     _uiState.update { it.copy(isLoading = false, rol = usuario.rol) }
                 },
                 onFailure = { e ->
+                    SafeLog.e(TAG, "Login falló: ${e.message}")
                     _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = e.message ?: "Error de inicio de sesión"
-                        )
+                        it.copy(isLoading = false, error = e.message ?: "Error de inicio de sesión")
                     }
                 }
             )
@@ -70,5 +69,9 @@ class LoginViewModel @Inject constructor(
 
     fun clearError() {
         _uiState.update { it.copy(error = null) }
+    }
+
+    companion object {
+        private const val TAG = "LoginVM"
     }
 }

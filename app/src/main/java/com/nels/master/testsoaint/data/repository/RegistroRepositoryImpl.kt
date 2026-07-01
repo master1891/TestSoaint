@@ -6,6 +6,8 @@ import com.nels.master.testsoaint.data.local.entity.toEntity
 import com.nels.master.testsoaint.data.remote.api.RegistroApi
 import com.nels.master.testsoaint.data.remote.dto.toCrearRequest
 import com.nels.master.testsoaint.data.remote.dto.toDomain
+import com.nels.master.testsoaint.domain.exception.AppException
+import com.nels.master.testsoaint.domain.exception.NetworkException
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.repository.RegistroRepository
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +22,7 @@ class RegistroRepositoryImpl @Inject constructor(
 ) : RegistroRepository {
 
     override suspend fun crearRegistro(registro: Registro): Result<Registro> {
-        return runCatching {
+        return try {
             val entity = registro.toEntity()
             val id = registroDao.insertar(entity)
             val entityConId = entity.copy(id = id)
@@ -28,10 +30,14 @@ class RegistroRepositoryImpl @Inject constructor(
             val response = registroApi.crearRegistro(registro.toCrearRequest())
             if (response.isSuccessful) {
                 registroDao.actualizarSincronizado(id, true)
-                entityConId.copy(sincronizado = true).toDomain()
+                Result.success(entityConId.copy(sincronizado = true).toDomain())
             } else {
-                entityConId.toDomain()
+                Result.success(entityConId.toDomain())
             }
+        } catch (e: AppException) {
+            Result.failure(e)
+        } catch (e: Exception) {
+            Result.failure(NetworkException("Error de red", e))
         }
     }
 
@@ -48,12 +54,17 @@ class RegistroRepositoryImpl @Inject constructor(
     }
 
     override suspend fun obtenerRegistrosRemotos(): Result<List<Registro>> {
-        return runCatching {
+        return try {
             val response = registroApi.obtenerRegistros()
             if (!response.isSuccessful) {
-                throw Exception("Error al obtener registros remotos: ${response.code()}")
+                Result.failure(NetworkException("Error al obtener registros remotos: ${response.code()}"))
+            } else {
+                Result.success(response.body()?.map { it.toDomain() } ?: emptyList())
             }
-            response.body()?.map { it.toDomain() } ?: emptyList()
+        } catch (e: AppException) {
+            Result.failure(e)
+        } catch (e: Exception) {
+            Result.failure(NetworkException("Error de red", e))
         }
     }
 

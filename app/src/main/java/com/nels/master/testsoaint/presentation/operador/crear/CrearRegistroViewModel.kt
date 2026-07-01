@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.usecase.CrearRegistroUseCase
+import com.nels.master.testsoaint.utils.SafeLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -73,15 +74,17 @@ class CrearRegistroViewModel @Inject constructor(
                     _uiState.update { it.copy(isLoading = false, exito = true) }
                 },
                 onFailure = { e ->
+                    SafeLog.e(TAG, "Error al guardar registro: ${e.message}")
                     _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = e.message ?: "Error al guardar el registro"
-                        )
+                        it.copy(isLoading = false, error = e.message ?: "Error al guardar el registro")
                     }
                 }
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "CrearRegistroVM"
     }
 
     fun reiniciar() {
