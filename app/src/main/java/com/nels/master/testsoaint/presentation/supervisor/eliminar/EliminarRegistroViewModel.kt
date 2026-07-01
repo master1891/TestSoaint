@@ -4,25 +4,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.usecase.EliminarRegistroUseCase
-import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesUseCase
+import com.nels.master.testsoaint.domain.usecase.ObtenerRegistrosLocalesFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class EliminarRegistroUiState(
     val registros: List<Registro> = emptyList(),
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val error: String? = null,
     val mensajeExito: String? = null
 )
 
 @HiltViewModel
 class EliminarRegistroViewModel @Inject constructor(
-    private val obtenerRegistrosLocalesUseCase: ObtenerRegistrosLocalesUseCase,
+    private val obtenerRegistrosLocalesFlowUseCase: ObtenerRegistrosLocalesFlowUseCase,
     private val eliminarRegistroUseCase: EliminarRegistroUseCase
 ) : ViewModel() {
 
@@ -30,24 +33,16 @@ class EliminarRegistroViewModel @Inject constructor(
     val uiState: StateFlow<EliminarRegistroUiState> = _uiState.asStateFlow()
 
     init {
-        cargarRegistros()
-    }
-
-    fun cargarRegistros() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            val result = obtenerRegistrosLocalesUseCase()
-            result.fold(
-                onSuccess = { registros ->
-                    _uiState.update { it.copy(registros = registros, isLoading = false) }
-                },
-                onFailure = { e ->
-                    _uiState.update {
-                        it.copy(isLoading = false, error = e.message ?: "Error al cargar registros")
-                    }
+        obtenerRegistrosLocalesFlowUseCase()
+            .onEach { registros ->
+                _uiState.update { it.copy(registros = registros, isLoading = false) }
+            }
+            .catch { e ->
+                _uiState.update {
+                    it.copy(isLoading = false, error = e.message ?: "Error al cargar registros")
                 }
-            )
-        }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun eliminarRegistro(id: Long) {
@@ -62,7 +57,6 @@ class EliminarRegistroViewModel @Inject constructor(
                             mensajeExito = "Registro eliminado correctamente"
                         )
                     }
-                    cargarRegistros()
                 },
                 onFailure = { e ->
                     _uiState.update {

@@ -8,6 +8,8 @@ import com.nels.master.testsoaint.data.remote.dto.toCrearRequest
 import com.nels.master.testsoaint.data.remote.dto.toDomain
 import com.nels.master.testsoaint.domain.model.Registro
 import com.nels.master.testsoaint.domain.repository.RegistroRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +38,12 @@ class RegistroRepositoryImpl @Inject constructor(
     override suspend fun obtenerRegistrosLocales(): Result<List<Registro>> {
         return runCatching {
             registroDao.obtenerTodos().map { it.toDomain() }
+        }
+    }
+
+    override fun obtenerRegistrosLocalesFlow(): Flow<List<Registro>> {
+        return registroDao.obtenerTodosFlow().map { entities ->
+            entities.map { it.toDomain() }
         }
     }
 
