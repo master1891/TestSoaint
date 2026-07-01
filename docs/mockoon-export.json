@@ -1,0 +1,216 @@
+{
+  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "lastMigration": 33,
+  "name": "TestSoaint API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "192.168.88.69",
+  "routes": [
+    {
+      "uuid": "1eb5b124-d254-465a-8c32-25e08a59e94f",
+      "type": "http",
+      "documentation": "POST /api/auth/login",
+      "method": "post",
+      "endpoint": "api/auth/login",
+      "responses": [
+        {
+          "uuid": "c981adb5-c842-455c-9078-d1bb07227749",
+          "body": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvcGVyYWRvciIsIlJvbCI6Ik9wZXJhZG9yIiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE5OTk5OTk5OTl9.VK0s15kLu4KUWtzWUO-waVrnmqje9D4_niZNeTR0gL0\"}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Operador",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "fallbackTo404": false,
+          "default": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "operador",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "37b4584b-c0cf-4bd5-8196-3c493e882f5d",
+          "body": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdXBlcnZpc29yIiwiUm9sIjoiU3VwZXJ2aXNvciIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxOTk5OTk5OTk5fQ.IM8WjI73ML-AI5FsZiHq4Gi7VbTf4YtvN9hwz5eal_8\"}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Supervisor",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "fallbackTo404": false,
+          "default": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "supervisor",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "b3df2b1f-8c6e-4c45-b334-c41a14fc8c03",
+          "body": "{\"error\":\"Credenciales invalidas\"}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "Default 401",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "fallbackTo404": false,
+          "default": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "2980e9c5-c366-4c09-8c0b-7f7c058be15a",
+      "type": "http",
+      "documentation": "GET /api/registros",
+      "method": "get",
+      "endpoint": "api/registros",
+      "responses": [
+        {
+          "uuid": "b229718b-3238-4ff3-9b16-129de9ad5387",
+          "body": "[{\"id\":1,\"nombre\":\"Juan Perez\",\"edad\":30,\"nivelEstudios\":\"Universidad\"},{\"id\":2,\"nombre\":\"Maria Garcia\",\"edad\":25,\"nivelEstudios\":\"Posgrado\"},{\"id\":3,\"nombre\":\"Carlos Lopez\",\"edad\":35,\"nivelEstudios\":\"Preparatoria\"},{\"id\":4,\"nombre\":\"Ana Martinez\",\"edad\":28,\"nivelEstudios\":\"Universidad\"},{\"id\":5,\"nombre\":\"Pedro Ramirez\",\"edad\":22,\"nivelEstudios\":\"Secundaria\"}]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Lista",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "fallbackTo404": false,
+          "default": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "0147dbe5-ca4f-4235-955f-2974f4a0468b",
+      "type": "http",
+      "documentation": "POST /api/registros",
+      "method": "post",
+      "endpoint": "api/registros",
+      "responses": [
+        {
+          "uuid": "ce35c1cb-b3c4-457c-bc99-a9007ec86d03",
+          "body": "{\"status\":\"ok\",\"mensaje\":\"Registro creado exitosamente\"}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Creado",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "fallbackTo404": false,
+          "default": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "1eb5b124-d254-465a-8c32-25e08a59e94f"
+    },
+    {
+      "type": "route",
+      "uuid": "2980e9c5-c366-4c09-8c0b-7f7c058be15a"
+    },
+    {
+      "type": "route",
+      "uuid": "0147dbe5-ca4f-4235-955f-2974f4a0468b"
+    }
+  ],
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "proxyMode": false,
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "data": [],
+  "folders": [],
+  "proxyHost": "",
+  "cors": true,
+  "callbacks": []
+}
